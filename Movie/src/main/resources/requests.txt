@@ -1,0 +1,19 @@
+http://localhost:8080/theatre/admin/screen/getscreens
+http://localhost:8080/theatre/admin/screen/getscreen/?
+http://localhost:8080/theatre/admin/screen/addscreen		-----	{"name":"Screen3", "isActive":true}
+http://localhost:8080/theatre/admin/screen/addscreen		-----	{"name":"Screen33", "isActive":true, "movie":{"name":"Movie1Screen33", "isReleased":true, "isRunning":false}}
+http://localhost:8080/theatre/admin/screen/deletescreen/?
+http://localhost:8080/theatre/admin/screen/updatescreen		-----	{"screenId":?,"name":"Screen55", "isActive":false}}
+
+
+http://localhost:8080/theatre/admin/movie/getmovies
+http://localhost:8080/theatre/admin/movie/getmovie/?
+http://localhost:8080/theatre/admin/movie/addmovie			-----	{"name":"New Movie", "isReleased":false, "isRunning":true}}
+http://localhost:8080/theatre/admin/movie/deletemovie/?
+http://localhost:8080/theatre/admin/movie/updatemovie		-----	{"movieId":?, "name":"New Moviesix", "isReleased":false, "isRunning":false}}
+
+http://localhost:8080/theatre/admin/theatre/addmovietoscreen?screenId=31&movieId=6
+http://localhost:8080/theatre/admin/theatre/addmovieposter/6
+http://localhost:8080/theatre/admin/theatre/getmovieposterdata/6
+http://localhost:8080/theatre/admin/theatre/deleteposter/?
+http://localhost:8080/theatre/admin/theatre/getposter/?
