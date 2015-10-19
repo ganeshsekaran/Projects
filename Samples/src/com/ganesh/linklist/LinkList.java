@@ -1,6 +1,7 @@
 package com.ganesh.linklist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -118,8 +119,13 @@ public class LinkList {
 		if (isDoubleLinkList() && tmp2 != null) {
 			tmp2.setPrev(head);
 		}
-
 		count++;
+	}
+
+	public synchronized void sort() {
+		int[] arrayValue = toArray();
+		Arrays.sort(arrayValue);
+		toLinkList(arrayValue);
 	}
 
 	/**
@@ -176,7 +182,6 @@ public class LinkList {
 				if (isDelete) {
 					if (tmpPrev == null) {
 						head = tmp.getNext();
-
 						if (isDoubleLinkList()) {
 							head.setPrev(null);
 						}
@@ -191,7 +196,6 @@ public class LinkList {
 							tail = tmpPrev;
 						}
 					}
-
 					count--;
 				}
 				found = true;
@@ -499,11 +503,15 @@ public class LinkList {
 	 */
 	public synchronized void toLinkList(List<Integer> list) {
 		reset();
+		for (Integer data : list) {
+			addLast(data);
+		}
+	}
 
-		if (list.size() > 0) {
-			for (Integer data : list) {
-				addLast(data);
-			}
+	public synchronized void toLinkList(int[] list) {
+		reset();
+		for (Integer data : list) {
+			addLast(data);
 		}
 	}
 

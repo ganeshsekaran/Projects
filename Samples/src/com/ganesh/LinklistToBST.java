@@ -23,21 +23,21 @@ public class LinklistToBST {
 	}
 
 	// build tree bottom-up
-	private TreeNode sortedListToBST(ListNode listNode, int start, int end) {
-		if (start > end)
-			return null;
+	private TreeNode sortedListToBST(ListNode listNode, int lowIndex,
+			int highIndex) {
+		TreeNode root = null;
+		if (lowIndex <= highIndex) {
+			// mid
+			int mid = (lowIndex + highIndex) / 2;
 
-		// mid
-		int mid = (start + end) / 2;
+			TreeNode left = sortedListToBST(listNode, lowIndex, mid - 1);
+			root = new TreeNode(listNode.val);
+			listNode = listNode.next;
+			TreeNode right = sortedListToBST(listNode, mid + 1, highIndex);
 
-		TreeNode left = sortedListToBST(listNode, start, mid - 1);
-		TreeNode root = new TreeNode(listNode.val);
-		listNode = listNode.next;
-		TreeNode right = sortedListToBST(listNode, mid + 1, end);
-
-		root.left = left;
-		root.right = right;
-
+			root.left = left;
+			root.right = right;
+		}
 		return root;
 	}
 
