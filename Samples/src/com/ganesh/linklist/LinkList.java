@@ -18,14 +18,9 @@ public class LinkList {
 	 * enum for link list type.
 	 */
 	public enum LinkListType {
-		TYPE_SINGLE_LIST(8), TYPE_DOUBLE_LIST(12);
-		final int size;
-		LinkListType(int size){
-			this.size = size;
-		}
-		
-		public int getSize(){
-			return size;
+		TYPE_SINGLE_LIST, TYPE_DOUBLE_LIST();
+
+		LinkListType() {
 		}
 	}
 
@@ -366,6 +361,36 @@ public class LinkList {
 	}
 
 	/**
+	 * Private method to reverse the list iteratively
+	 */
+	public synchronized void reverseListIterative() {
+		Node previous = null, temp = null;
+		while (true) {
+			temp = head.getNext();
+			head.setNext(previous);
+			previous = head;
+			if (temp == null) {
+				break;
+			}
+			head = temp;
+		}
+	}
+
+	/**
+	 * Helper to print the link list.
+	 */
+	public synchronized String toString() {
+		Node node = head;
+		StringBuilder builder = new StringBuilder();
+		while (node != null) {
+			builder.append(node.getData()).append("-->");
+			node = node.getNext();
+		}
+		builder.append("null");
+		return builder.toString();
+	}
+
+	/**
 	 * Private helper method to reverse the list in blocks.
 	 *
 	 * @param current
@@ -420,16 +445,6 @@ public class LinkList {
 
 			reverseList(tmpNext, current);
 		}
-	}
-
-	/**
-	 * Private method to reverse the list iteratively.
-	 */
-	private synchronized void reverseListIterative() {
-		List<Integer> items = toArrayList();
-		Collections.reverse(items);
-
-		toLinkList(items);
 	}
 
 	/**
