@@ -2,11 +2,11 @@ package com.ganesh;
 
 public class Thread123 {
 
-	static volatile byte counter = 0;
+	static volatile int counter = 0;
 
 	public static void main(String[] args) throws Exception {
 		Thread123 thisObj = new Thread123();
-		int size =2;
+		int size =3;
 		for (int i = 0; i < size; i++) {
 			String threadName = "Thread-" + i;
 			Thread t = new Thread(thisObj.new Runner(size, i), threadName);
@@ -32,7 +32,7 @@ public class Thread123 {
 				boolean canProcess = mod == threadNumber || mod == (-1*threadNumber);
 				if (canProcess) {
 					try {
-						//Thread.sleep(10);
+						//Thread.sleep(50);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
