@@ -1,5 +1,8 @@
 package com.ganesh;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +14,14 @@ public class Tries {
 		root = new TrieNode(' ');
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		InputStream is = System.in;
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		
+		//char chara = (char) br.read();
+
+		
 		Tries main = new Tries();
 
 		for (int i = 0; i < 100; i++) {

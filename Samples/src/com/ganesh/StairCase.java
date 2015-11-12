@@ -10,15 +10,6 @@ public class StairCase {
 		BufferedReader bf = new BufferedReader(ip);
 
 		Integer count = Integer.parseInt(bf.readLine());
-		int sum = 0;
-		
-		for(int i =0;i<count;i++){
-			Integer in = Integer.parseInt(bf.readLine());
-			sum += in;
-		}
-		
-		
-		
 
 		for (int i = 0; i < count; i++) {
 
