@@ -3,6 +3,7 @@ package com.ganesh.binarytree;
 import java.util.Map;
 import java.util.Set;
 
+import com.ganesh.binarytree.PrintTraversal.TraversalType;
 import com.ganesh.linklist.LinkList;
 import com.ganesh.linklist.LinkList.LinkListRandomOption;
 import com.ganesh.linklist.LinkListToBST;
@@ -24,7 +25,7 @@ public class Main {
 		
 		PrintTraversal traversal = new PrintTraversal();
 		//traversal.traversal(treeNode, TraversalType.PRE_ORDER);
-		//traversal.traversal(treeNode, TraversalType.IN_ORDER);
+		traversal.traversal(treeNode, TraversalType.IN_ORDER);
 		//traversal.traversal(treeNode, TraversalType.POST_ORDER);
 		
 		HorizontalSum horiSum = new HorizontalSum();

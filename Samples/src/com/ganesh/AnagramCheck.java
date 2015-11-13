@@ -8,12 +8,14 @@ public class AnagramCheck {
 		AnagramCheck main = new AnagramCheck();
 		System.out.println("Is anagram : "
 				+ main.isAnagramWithoutCollections("dabc", "bacd"));
+		System.out.println("Is anagram : "
+				+ main.isAnagram("dabc", "bacd"));
 	}
 
 	public boolean isAnagramWithoutCollections(String s1, String s2) {
 		boolean isAnagram = true;
 
-		if (s1.length() != s1.length()) {
+		if (s1.length() != s2.length()) {
 			isAnagram = false;
 		} else {
 			char[] c1 = s1.toCharArray();

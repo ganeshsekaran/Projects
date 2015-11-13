@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HorizontalSum {
+	
 	public Map<Integer, Integer> sum(TreeNode node) {
 		Map<Integer, Integer> levelSum = new HashMap<Integer, Integer>();
 		sum(node, levelSum, 0);
