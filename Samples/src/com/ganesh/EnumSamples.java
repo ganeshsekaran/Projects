@@ -20,6 +20,19 @@ public class EnumSamples implements Cloneable {
 			return INSTATNCE;
 		}
 	}
+	
+	public enum AbstractTest1 implements Runnable {
+		TEST1; 
+		//abstract void type();
+
+		public void run() {
+			System.out.println("Run");
+		}
+		
+		protected void testOveride(){
+			AbstractTest testEnum = AbstractTest.TEST;
+		}
+	}
 
 	public enum AbstractTest implements Runnable {
 		TEST {

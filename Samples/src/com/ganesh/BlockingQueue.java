@@ -35,7 +35,7 @@ public class BlockingQueue<T> {
 					listSize = list.size();
 				}
 				added = list.add(data);
-				//System.out.println("Added : " + data);
+				// System.out.println("Added : " + data);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -82,7 +82,7 @@ public class BlockingQueue<T> {
 					listSize = list.size();
 				}
 				removed = list.remove(0);
-				//System.out.println("Removed : " + removed);
+				// System.out.println("Removed : " + removed);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -105,6 +105,11 @@ public class BlockingQueue<T> {
 
 	public T get() {
 		return get(0);
+	}
+
+	public T getLast() {
+		int size = size();
+		return get(size - 1);
 	}
 
 	public int size() {
