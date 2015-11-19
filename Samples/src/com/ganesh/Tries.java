@@ -3,7 +3,7 @@ package com.ganesh;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tries {
@@ -92,7 +92,7 @@ public class Tries {
 
 		TrieNode(char content) {
 			this.content = content;
-			subList = new LinkedList<TrieNode>();
+			subList = new ArrayList<TrieNode>();
 			isEnd = false;
 			count = 0;
 		}
