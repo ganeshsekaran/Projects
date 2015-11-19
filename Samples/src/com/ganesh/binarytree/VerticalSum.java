@@ -16,7 +16,7 @@ public class VerticalSum {
 			int data = list.get(level);
 			data = data + node.data;
 			list.add(level, data);
-			sum(node.left, list, level + 1);
+			sum(node.left, list, level - 1);
 			sum(node.right, list, level + 1);
 		}
 	}

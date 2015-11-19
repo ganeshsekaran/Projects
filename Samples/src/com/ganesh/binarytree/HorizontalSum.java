@@ -18,7 +18,7 @@ public class HorizontalSum {
 			data = data + node.data;
 			
 			map.put(level, data);
-			sum(node.left, map, level - 1);
+			sum(node.left, map, level + 1);
 			sum(node.right, map, level + 1);
 		}
 	}

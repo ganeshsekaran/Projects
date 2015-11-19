@@ -8,7 +8,7 @@ public class FindingTheMaxSumInArray {
 		int[] array = new int[] { 1, 2, -5, 4, 7, 6, -10, 7, 5 };
 		System.out.println(main.findMaxSum(array));
 
-		array = new int[] { -7, -8, -9, -6, -10, -1, -3, -2 };
+		array = new int[] { -1, -8, -9, -6, -10, -1,-3, -2 };
 		System.out.println(main.findMaxSum(array));
 	}
 
