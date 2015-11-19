@@ -1,5 +1,8 @@
 package com.ganesh.linklist;
 
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * User: Ganesh
  */
@@ -15,6 +18,8 @@ public class Thread1 implements Runnable
 
     public void run()
     {
+    	HashMap map = new HashMap();
+    	
         list.reverseList();
     }
 }

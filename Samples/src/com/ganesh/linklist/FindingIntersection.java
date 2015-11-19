@@ -50,7 +50,15 @@ public class FindingIntersection {
 	public Node getIntersection(LinkList list1, LinkList list2) {
 
 		Node intersectionNode = null;
-
+		
+		ThreadLocal tl = new ThreadLocal(){
+			@Override
+			protected Object initialValue() {
+				// TODO Auto-generated method stub
+				return super.initialValue();
+			}
+		};
+		
 		return intersectionNode;
 
 	}
