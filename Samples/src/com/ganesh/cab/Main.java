@@ -17,7 +17,7 @@ public class Main {
 	void start(DriverApp driverApp) throws Exception {
 
 		// Add five drivers;
-		driverApp.addDriver(5);
+		Driver[] drivers = driverApp.addDriver(5);
 
 		Map<Integer, User> userMap = new HashMap<Integer, User>();
 		// create 10 users.
@@ -29,6 +29,9 @@ public class Main {
 
 		// Wait for 5 secs
 		Thread.sleep(2000);
+		
+		Driver driver = drivers[0];
+		driverApp.removeDriver(driver);
 
 		// Let User 1 create a booking request
 		BookingRequest request = new BookingRequest(userMap.get(1));

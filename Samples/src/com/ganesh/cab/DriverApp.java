@@ -4,20 +4,31 @@ class DriverApp {
 
 	private static volatile int driverId = 0;
 	private static volatile int cabId = 0;
+	
+	public Driver addDriver(){
+		Driver[] driver = addDriver(1);
+		return driver[0];
+	}
 
-	public void addDriver(int count) {
+	public Driver[] addDriver(int count) {
 
+		Driver[] drivers = new Driver[count];
 		for (int i = 0; i < count; i++) {
 			cabId++;
 			driverId++;
 			Cab cab = new CabImpl("KA-01-MK-3427 --- " + cabId);
 			String driverName = "Driver " + driverId;
 			Driver driver = new DriverImpl(cab, driverName, driverId);
-
+			drivers[i] = driver;
 			Runnable adder = new Adder(driver, cab);
 			Thread t = new Thread(adder);
 			t.start();
 		}
+		return drivers;
+	}
+
+	public void removeDriver(Driver driver) {
+		DriverManagement.getInstance().logout(driver);
 	}
 
 	class Adder implements Runnable {
@@ -73,6 +84,24 @@ class DriverApp {
 		@Override
 		public String getName() {
 			return name;
+		}
+
+		@Override
+		public int hashCode() {
+			return getId();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null) {
+				return false;
+			}
+
+			if (!(obj instanceof DriverImpl)) {
+				return false;
+			}
+
+			return ((Driver) obj).getId() == getId();
 		}
 	}
 

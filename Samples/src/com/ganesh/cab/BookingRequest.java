@@ -10,7 +10,7 @@ public class BookingRequest {
 	private Place endingPlace;
 	
 	private int distance;
-
+	
 	public BookingRequest(User user) {
 		super();
 		this.user = user;
