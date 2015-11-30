@@ -19,27 +19,30 @@ public class Main {
 		Main main = new Main();
 		// main.test();
 		//main.test2();
-		main.mirror();
+		//main.mirror();
+		main.test();
 	}
 	
 	private void mirror(){
 		TreeNode head = createTree();
 		PrintTraversal traversal = new PrintTraversal();
-	//	traversal.traversal(head, TraversalType.IN_ORDER);
+		traversal.traversal(head, TraversalType.IN_ORDER);
 		
-		traversal.traversal(head, TraversalType.TREE_VERTICAL);
+		traversal.traversal(head, TraversalType.IN_ORDER_LOOPING);
 		
-		traversal.traversal(head, TraversalType.SPIRAL_HORIZONTAL);
+		//traversal.traversal(head, TraversalType.TREE_VERTICAL);
+		
+		//traversal.traversal(head, TraversalType.SPIRAL_HORIZONTAL);
 		
 		
-		MirrorTree mirror = new MirrorTree();
+		//MirrorTree mirror = new MirrorTree();
 		//mirror.mirror(head);
 		//traversal.traversal(head, TraversalType.IN_ORDER);
 	}
 
 	private void test() {
 		LinkList list = new LinkList();
-		list.generateRandomLinkList(10, LinkListRandomOption.RANDOM_UNIQUE);
+		list.generateRandomLinkList(7, LinkListRandomOption.RANDOM_UNIQUE);
 		list.sort();
 		System.out.println(list.toString());
 
@@ -49,23 +52,13 @@ public class Main {
 		PrintTraversal traversal = new PrintTraversal();
 		// traversal.traversal(treeNode, TraversalType.PRE_ORDER);
 		traversal.traversal(treeNode, TraversalType.IN_ORDER);
-		// traversal.traversal(treeNode, TraversalType.POST_ORDER);
-
-		HorizontalSum horiSum = new HorizontalSum();
-		Map<Integer, Integer> sums = horiSum.sum(treeNode);
-		Set set = sums.entrySet();
-		Object[] data = set.toArray();
-		System.out.println();
-		for (Object sum : data) {
-			System.out.println(sum);
-		}
-
-		/*
-		 * VerticalSum veriSum = new VerticalSum(); sums =
-		 * veriSum.sum(treeNode); set = sums.entrySet(); data = set.toArray();
-		 * System.out.println(); for(Object sum : data){
-		 * System.out.println(sum); }
-		 */
+		traversal.traversal(treeNode, TraversalType.IN_ORDER_LOOPING);
+		
+		traversal.traversal(treeNode, TraversalType.PRE_ORDER);
+		traversal.traversal(treeNode, TraversalType.PRE_ORDER_LOOPING);
+		
+		traversal.traversal(treeNode, TraversalType.POST_ORDER);
+		traversal.traversal(treeNode, TraversalType.POST_ORDER_LOOPING);
 	}
 
 	private void test2() {

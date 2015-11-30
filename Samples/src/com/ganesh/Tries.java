@@ -9,6 +9,7 @@ import java.util.List;
 public class Tries {
 
 	private final TrieNode root;
+	private final String wordSperator = " ";
 
 	public Tries() {
 		root = new TrieNode(' ');
@@ -18,10 +19,9 @@ public class Tries {
 		InputStream is = System.in;
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader br = new BufferedReader(isr);
-		
-		//char chara = (char) br.read();
 
-		
+		// char chara = (char) br.read();
+
 		Tries main = new Tries();
 
 		for (int i = 0; i < 100; i++) {
@@ -29,13 +29,27 @@ public class Tries {
 		}
 
 		for (int i = 0; i < 100; i++) {
-			//main.remove("Ganesh" + i);
+			// main.remove("Ganesh" + i);
 			boolean search = main.search("Ganesh" + i);
 			System.out.println(search);
 		}
 	}
 
 	public void insert(String word) {
+		String[] words = word.split(wordSperator);
+
+		if (words.length > 1) {
+
+			for (String w : words) {
+				processInsert(w);
+			}
+			processInsert(word);
+		} else {
+			processInsert(word);
+		}
+	}
+
+	private void processInsert(String word) {
 		if (search(word)) {
 			return;
 		}
@@ -89,6 +103,7 @@ public class Tries {
 		List<TrieNode> subList;
 		boolean isEnd;
 		int count;
+		boolean isWordSeperator;
 
 		TrieNode(char content) {
 			this.content = content;

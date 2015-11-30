@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 public class PrintTraversal {
 
 	public enum TraversalType {
-		PRE_ORDER, IN_ORDER, POST_ORDER, TREE_VERTICAL, SPIRAL_HORIZONTAL, SPIRAL_VERTICAL
+		PRE_ORDER, IN_ORDER, POST_ORDER, TREE_VERTICAL, SPIRAL_HORIZONTAL, SPIRAL_VERTICAL, IN_ORDER_LOOPING, PRE_ORDER_LOOPING, POST_ORDER_LOOPING
 	}
 
 	public void traversal(TreeNode treeNode, TraversalType type) {
@@ -57,6 +57,30 @@ public class PrintTraversal {
 				System.out.println("Printing tree Spiral Horizontal");
 				horizontalSprial(treeNode);
 			}
+		} else if (type == TraversalType.IN_ORDER_LOOPING) {
+			if (treeNode == null) {
+				System.out.println("No Data");
+			} else {
+				System.out.println();
+				System.out.println("In order traversal using loop");
+				inOrderWithLoop(treeNode);
+			}
+		} else if (type == TraversalType.PRE_ORDER_LOOPING) {
+			if (treeNode == null) {
+				System.out.println("No Data");
+			} else {
+				System.out.println();
+				System.out.println("Pre order traversal using loop");
+				preOrderWithLoop(treeNode);
+			}
+		} else if (type == TraversalType.POST_ORDER_LOOPING) {
+			if (treeNode == null) {
+				System.out.println("No Data");
+			} else {
+				System.out.println();
+				System.out.println("Post order traversal using loop");
+				postOrderWithLoop(treeNode);
+			}
 		}
 	}
 
@@ -68,6 +92,29 @@ public class PrintTraversal {
 		}
 	}
 
+	private void preOrderWithLoop(TreeNode treeNode) {
+		TreeNode currenNode = treeNode;
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(currenNode);
+
+		while (!stack.isEmpty()) {
+			while (currenNode != null) {
+				System.out.print(currenNode.data + " ");
+				currenNode = currenNode.left;
+				if (currenNode != null) {
+					stack.push(currenNode);
+				}
+			}
+
+			TreeNode popedNode = stack.pop();
+			
+			currenNode = popedNode.right;
+			if (currenNode != null) {
+				stack.push(currenNode);
+			}
+		}
+	}
+
 	private void inOrder(TreeNode treeNode) {
 		if (treeNode != null) {
 			inOrder(treeNode.left);
@@ -76,11 +123,61 @@ public class PrintTraversal {
 		}
 	}
 
+	private void inOrderWithLoop(TreeNode treeNode) {
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		TreeNode currentNode = treeNode;
+		stack.push(currentNode);
+
+		while (!stack.isEmpty()) {
+			while (currentNode != null) {
+				currentNode = currentNode.left;
+				if (currentNode != null) {
+					stack.push(currentNode);
+				}
+			}
+
+			TreeNode popedNode = stack.pop();
+			System.out.print(popedNode.data + " ");
+
+			currentNode = popedNode.right;
+			if (currentNode != null) {
+				stack.push(currentNode);
+			}
+		}
+	}
+
 	private void postOrder(TreeNode treeNode) {
 		if (treeNode != null) {
 			postOrder(treeNode.left);
 			postOrder(treeNode.right);
 			System.out.print(treeNode.data + " ");
+		}
+	}
+
+	private void postOrderWithLoop(TreeNode treeNode) {
+		TreeNode currenNode = treeNode;
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(currenNode);
+
+		while (!stack.isEmpty()) {
+			while (currenNode != null) {
+				currenNode = currenNode.left;
+				if (currenNode != null) {
+					stack.push(currenNode);
+				}
+			}
+
+			//TreeNode popedNode = stack.pop();
+			currenNode = stack.pop();
+			TreeNode tmp = currenNode;
+			currenNode = currenNode.right;
+			if (currenNode != null) {
+				stack.push(currenNode);
+			} else {
+				
+				System.out.print(tmp.data + " ");
+				
+			}
 		}
 	}
 
@@ -109,7 +206,7 @@ public class PrintTraversal {
 	private void horizontalSprial(TreeNode head) {
 		Map<Integer, Collection<Integer>> map = new LinkedHashMap<Integer, Collection<Integer>>();
 		horizontalSprial(head, map, 0);
-		
+
 		Set<Entry<Integer, Collection<Integer>>> set = map.entrySet();
 		Iterator<Entry<Integer, Collection<Integer>>> itr = set.iterator();
 
@@ -125,9 +222,9 @@ public class PrintTraversal {
 				}
 			} else if (values instanceof Stack) {
 				Stack<Integer> stackValues = (Stack<Integer>) values;
-				
+
 				int size = stackValues.size();
-				for(int i=0;i<size;i++){
+				for (int i = 0; i < size; i++) {
 					System.out.print(" " + stackValues.pop());
 				}
 			}
