@@ -79,11 +79,11 @@ final class BookingManager {
 		if (!cabsAvailable) {
 			status.setStatus(BookingStatus.Status.CAB_NOT_AVAILABLE);
 		} else {
-			status.setStatus(BookingStatus.Status.CONFIRMED);
 			RequestWrapper wrapper = new RequestWrapper(request, status);
 			synchronized (requestQueue) {
 				requestQueue.enqueue(wrapper);
 				requestQueue.notify();
+				status.setStatus(BookingStatus.Status.CONFIRMED);
 			}
 		}
 		return status;
