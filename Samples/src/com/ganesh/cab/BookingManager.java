@@ -98,7 +98,6 @@ final class BookingManager {
 				if (runnable == null) {
 					requestQueue.remove(wrapper);
 				} else {
-
 					DriverRunnable.Status status = runnable.getStatus();
 					if (status.equals(DriverRunnable.Status.WAITNG)) {
 

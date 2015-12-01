@@ -6,7 +6,7 @@ public class AllPermutationsOfString {
 
 	public static void main(String[] args) {
 		AllPermutationsOfString main = new AllPermutationsOfString();
-		String str = "tata";
+		String str = "gan";
 		HashSet<String> set = new HashSet<String>();
 		main.getAllPermutation("", str, set);
 		
