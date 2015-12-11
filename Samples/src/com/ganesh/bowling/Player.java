@@ -1,51 +1,40 @@
 package com.ganesh.bowling;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
 	private final String playerName;
-	private volatile int points;
-	private final Map<Chance, int[]> pointMap;
-	
-	public Player(String playerName){
+	private final List<Chance> chanceList;
+
+	public Player(String playerName) {
 		this.playerName = playerName;
-		this.pointMap = new LinkedHashMap<Chance, int[]>();
+		this.chanceList = new ArrayList<Chance>();
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return playerName;
 	}
-	
-	public int getPoint(){
-		return points;
+
+	public int getTotalPoints() {
+		return 0;
 	}
-	
-	public void addPoints(Chance chance, int[] points){
-		pointMap.put(chance, points);
+
+	void addChance(Chance chance) {
+		chanceList.add(chance);
 	}
-	
-	public void printPoints(){
-		Set<Chance> chances = pointMap.keySet();
-		Iterator<Chance> itr = chances.iterator();
-		
-		int i=1;
-		while(itr.hasNext()){
-			Chance chance = itr.next();
+
+	public void printPoints() {
+
+		int i = 1;
+		for (Chance chance : chanceList) {
 			int points = 0;
-			for(int po : pointMap.get(chance)){
+			for (int po : chance.getPoints()) {
 				points += po;
 			}
 			System.out.println("Chance : " + i + " Points : " + points);
 			i++;
 		}
-	}
-	
-	void setPoint(int points){
-		this.points = points;
 	}
 }

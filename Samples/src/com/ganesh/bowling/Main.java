@@ -13,27 +13,23 @@ public class Main {
 	}
 
 	private void start(Game game) {
-		Player player1 = null;
-		Player player2 = null;
 		List<GameStatus> statusList = new ArrayList<GameStatus>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 1;i++) {
 			GameData gameData = new GameData(i+1, null, 2);
 
-			player1 = new Player("Ganesh");
-			player2 = new Player("Sekaran");
+			Player player1 = new Player("Ganesh");
+			//Player player2 = new Player("Sekaran");
 			gameData.addPlayer(player1);
-			gameData.addPlayer(player2);
+			//gameData.addPlayer(player2);
 
 			GameStatus status = game.startGame(gameData);
+			status.printGameFlow();
 			statusList.add(status);
 		}
 		
-		for(GameStatus status : statusList){
+/*		for(GameStatus status : statusList){
 			GameResultData data = status.waitForcomplete();
 			System.out.println("Game : "+status.getGameData().getGameId() + " status "+ data);
 		}
-		
-		player1.printPoints();
-		player2.printPoints();
-	}
+*/	}
 }

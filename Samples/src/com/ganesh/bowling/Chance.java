@@ -21,7 +21,15 @@ public class Chance {
 		this.noOfRounds = noOfRounds;
 		this.pointArray = new int[noOfRounds];
 	}
+	
+	public int[] getPoints(){
+		return pointArray;
+	}
 
+	public int getChanceCount(){
+		return chanceCount;
+	}
+	
 	int[] bowl() {
 		int totalPoints = 0;
 		for (int i = 0; i < noOfRounds && totalPoints < NO_OF_WOODS; i++) {
