@@ -101,7 +101,6 @@ public class Game {
 			synchronized (queue) {
 				while (queue.size() == 0 && !isInterrupted()) {
 					try {
-						System.out.println(t.getName() + " is waiting");
 						queue.wait();
 					} catch (InterruptedException e) {
 						System.out.println("interrupt");

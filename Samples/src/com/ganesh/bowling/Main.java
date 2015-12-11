@@ -14,22 +14,22 @@ public class Main {
 
 	private void start(Game game) {
 		List<GameStatus> statusList = new ArrayList<GameStatus>();
-		for (int i = 0; i < 1;i++) {
+		for (int i = 0; i < 4;i++) {
 			GameData gameData = new GameData(i+1, null, 2);
 
-			Player player1 = new Player("Ganesh");
-			//Player player2 = new Player("Sekaran");
+			Player player1 = new Player("Ganesh " + (i+1));
+			Player player2 = new Player("Sekaran " + (i+1));
 			gameData.addPlayer(player1);
-			//gameData.addPlayer(player2);
+			gameData.addPlayer(player2);
 
 			GameStatus status = game.startGame(gameData);
-			status.printGameFlow();
+			//status.printGameFlow();
 			statusList.add(status);
 		}
 		
-/*		for(GameStatus status : statusList){
-			GameResultData data = status.waitForcomplete();
-			System.out.println("Game : "+status.getGameData().getGameId() + " status "+ data);
+		for(GameStatus status : statusList){
+			status.waitForcomplete();
+			status.printGameFlow();
 		}
-*/	}
+	}
 }
