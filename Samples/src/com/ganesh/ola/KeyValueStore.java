@@ -1,7 +1,11 @@
 package com.ganesh.ola;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import sun.misc.Unsafe;
 
@@ -18,15 +22,18 @@ public class KeyValueStore<K, V> {
 	private final int noOfMaps;
 	private final double salt;
 	private final HashMapObj<K, V>[] hashMapObjArray;
+	private final TimerClass timerClass;
 
 	public KeyValueStore() {
 		this(16);
 	}
 
 	public KeyValueStore(final int count) {
-		noOfMaps = count;
-		salt = 0.37;
-		hashMapObjArray = createHashMapObj(count);
+		this.noOfMaps = count;
+		this.salt = 0.37;
+		this.hashMapObjArray = createHashMapObj(count);
+		this.timerClass = new TimerClass(5000);
+		timerClass.start();
 	}
 
 	private HashMapObj<K, V>[] createHashMapObj(int count) {
@@ -78,7 +85,7 @@ public class KeyValueStore<K, V> {
 		return values;
 	}
 
-	public V put(K key, V value) {
+	public V put(K key, V value, long ttl) {
 		// First get the hash map object from the index.
 		HashMapObj<K, V> hashMapObj = getHashMapObj(key);
 
@@ -88,8 +95,12 @@ public class KeyValueStore<K, V> {
 
 		// Synchronize on the hash map and put the content;
 		synchronized (hashMapObj.getLockObject()) {
-			return hashMapObj.put(key, value);
+			return hashMapObj.put(key, value, ttl);
 		}
+	}
+
+	public V put(K key, V value) {
+		return put(key, value, -1);
 	}
 
 	public V[] put(K[] keys, V[] values) {
@@ -164,6 +175,47 @@ public class KeyValueStore<K, V> {
 		System.out.println("Total size : " + totalSize);
 	}
 
+	class TimerClass {
+		private final Timer timer;
+		private final long delay;
+
+		public TimerClass(long delay) {
+			timer = new Timer(true);
+			this.delay = delay;
+		}
+
+		void start() {
+			timer.schedule(new TimerTaksClass(), delay);
+		}
+
+		class TimerTaksClass extends TimerTask {
+
+			public void run() {
+				removeExpiredEntry(System.currentTimeMillis());
+				start();
+			}
+		}
+
+		private void removeExpiredEntry(long currentTime) {
+			for (HashMapObj<K, V> hashMapObj : hashMapObjArray) {
+				synchronized (hashMapObj) {
+					HashMap<K, EntryValue<V, Long>> map = hashMapObj.getMap();
+
+					Collection<EntryValue<V, Long>> collections = map.values();
+					Iterator<EntryValue<V, Long>> itr = collections.iterator();
+
+					while (itr.hasNext()) {
+						EntryValue<V, Long> entry = itr.next();
+						long currentTTL = entry.ttl;
+						if (currentTTL != -1 && entry.ttl < currentTime) {
+							itr.remove();
+						}
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Static inner class for storing the key values.
 	 * 
@@ -175,15 +227,13 @@ public class KeyValueStore<K, V> {
 	static class HashMapObj<K, V> {
 		private final Object lock;
 		private final Unsafe unsafe;
-		private int size;
 
-		private volatile HashMap<K, V> table;
+		private volatile HashMap<K, EntryValue<V, Long>> table;
 
 		HashMapObj(Object lock) {
-			table = new HashMap<K, V>();
+			table = new HashMap<K, EntryValue<V, Long>>();
 			this.lock = lock;
 			this.unsafe = getUnsafe();
-			this.size = 0;
 		}
 
 		private Unsafe getUnsafe() {
@@ -195,6 +245,10 @@ public class KeyValueStore<K, V> {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+		HashMap<K, EntryValue<V, Long>> getMap() {
+			return table;
 		}
 
 		boolean isCurrentThreadHoldsLock() {
@@ -227,51 +281,57 @@ public class KeyValueStore<K, V> {
 			return released;
 		}
 
-		V put(K key, V value) {
+		V put(K key, V value, long ttl) {
 			try {
-				//Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			V retValue = table.put(key, value);
-			if (retValue == null) {
-				size++;
+			ttl = System.currentTimeMillis() + ttl;
+			EntryValue<V, Long> valueEntry = new EntryValue<V, Long>(value, ttl);
+			EntryValue<V, Long> ret = table.put(key, valueEntry);
+			if (ret == null) {
+				return null;
 			}
-			return retValue;
+			return ret.value;
 		}
 
 		V get(K key) {
 			try {
-				//Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return table.get(key);
+			EntryValue<V, Long> ret = table.get(key);
+			if (ret == null) {
+				return null;
+			}
+			return ret.value;
 		}
 
 		V remove(K key) {
 			try {
-				//Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			V value = table.remove(key);
-			if (value != null) {
-				size--;
+			EntryValue<V, Long> ret = table.remove(key);
+			if (ret != null) {
+				return ret.value;
 			}
-			return value;
+			return null;
 		}
 
 		int size() {
-			return size;
+			return table.size();
 		}
 
 		boolean containsKey(K key) {
 			try {
-				//Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -280,7 +340,38 @@ public class KeyValueStore<K, V> {
 		}
 
 		boolean containsValue(V value) {
-			return table.containsValue(value);
+			EntryValue<V, Long> entryValue = new EntryValue<V, Long>(value, -1);
+			return table.containsValue(entryValue);
+		}
+	}
+
+	static class EntryValue<V, Long> {
+		volatile V value;
+		final long ttl;
+
+		EntryValue(V value, long ttl) {
+			this.value = value;
+			this.ttl = ttl;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null) {
+				return false;
+			}
+
+			if (!(obj instanceof EntryValue)) {
+				return false;
+			}
+
+			return ((EntryValue<V, Long>) obj).value.equals(value);
+
+		}
+
+		@Override
+		public int hashCode() {
+			return value.hashCode();
 		}
 	}
 }

@@ -7,30 +7,55 @@ public class KeyValueStoreMain {
 
 	public static void main(String[] args) throws Exception {
 		KeyValueStoreMain main = new KeyValueStoreMain();
-		KeyValueStore<Object, Object> map = new KeyValueStore<Object, Object>();
+		KeyValueStore<Object, Object> map = new KeyValueStore<Object, Object>(16);
 		System.out.println("Starting the test :)");
 		main.test(map);
 	}
+	
+	private void test2(KeyValueStore<Object, Object> map) throws Exception{
+		int count = 16;
+		
+		List<Object> keys = new ArrayList<Object>();
+		List<Object> values = new ArrayList<Object>();
+		Thread[] adderThreads = new Thread[count];
+		long ttl = 4000;
+		for (int i = 0; i < count; i++) {
+			Adder adder = new Adder(map, ttl, keys, values);
+			Thread t = new Thread(adder);
+			adderThreads[i] = t;
+			t.start();
+			ttl+=1000;
+		}
+		
+		map.printMapStatus();
+		
+		while(map.size() != 0){
+		}
+		
+		map.printMapStatus();
+	}
 
 	private void test(KeyValueStore<Object, Object> map) throws Exception {
-		int count = 1000;
+		int count = 100;
 
 		List<Object> keys = new ArrayList<Object>();
 		List<Object> values = new ArrayList<Object>();
 		Thread[] adderThreads = new Thread[count];
+		long ttl = 4000;
 		for (int i = 0; i < count; i++) {
-			Adder adder = new Adder(map, keys, values);
+			Adder adder = new Adder(map, ttl, keys, values);
 			Thread t = new Thread(adder);
 			adderThreads[i] = t;
 			t.start();
+			ttl+=2000;
 		}
 
 		for (Thread t : adderThreads) {
 			t.join();
 		}
+		System.out.println("Done");
 
 		map.printMapStatus();
-		Thread.sleep(1000);
 
 		Thread[] containsKeyThreads = new Thread[count];
 		List<Boolean> containsKey = new ArrayList<Boolean>();
@@ -257,19 +282,20 @@ public class KeyValueStoreMain {
 		private final KeyValueStore<Object, Object> map;
 		private final List<Object> keys;
 		private final List<Object> values;
+		private final long ttl;
 
-		Adder(KeyValueStore<Object, Object> map, List<Object> keys,
+		Adder(KeyValueStore<Object, Object> map, long ttl, List<Object> keys,
 				List<Object> values) {
 			this.map = map;
 			this.keys = keys;
 			this.values = values;
+			this.ttl = ttl;
 		}
 
 		public void run() {
 			Object k = new Object();
 			Object v = new Object();
-			map.put(k, v);
-			
+			map.put(k, v, ttl);
 			
 			synchronized (keys) {
 				keys.add(k);
