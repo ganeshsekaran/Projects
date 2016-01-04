@@ -288,7 +288,9 @@ public class KeyValueStore<K, V> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ttl = System.currentTimeMillis() + ttl;
+			if (ttl != -1) {
+				ttl = System.currentTimeMillis() + ttl;
+			}
 			EntryValue<V, Long> valueEntry = new EntryValue<V, Long>(value, ttl);
 			EntryValue<V, Long> ret = table.put(key, valueEntry);
 			if (ret == null) {
