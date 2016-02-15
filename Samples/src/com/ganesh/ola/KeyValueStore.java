@@ -207,7 +207,7 @@ public class KeyValueStore<K, V> {
 					while (itr.hasNext()) {
 						EntryValue<V, Long> entry = itr.next();
 						long currentTTL = entry.ttl;
-						if (currentTTL != -1 && entry.ttl < currentTime) {
+						if (currentTTL != -1 && currentTTL < currentTime) {
 							itr.remove();
 						}
 					}
@@ -282,12 +282,6 @@ public class KeyValueStore<K, V> {
 		}
 
 		V put(K key, V value, long ttl) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			if (ttl != -1) {
 				ttl = System.currentTimeMillis() + ttl;
 			}
@@ -300,12 +294,6 @@ public class KeyValueStore<K, V> {
 		}
 
 		V get(K key) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			EntryValue<V, Long> ret = table.get(key);
 			if (ret == null) {
 				return null;
@@ -314,12 +302,6 @@ public class KeyValueStore<K, V> {
 		}
 
 		V remove(K key) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			EntryValue<V, Long> ret = table.remove(key);
 			if (ret != null) {
 				return ret.value;
@@ -332,12 +314,6 @@ public class KeyValueStore<K, V> {
 		}
 
 		boolean containsKey(K key) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return table.containsKey(key);
 		}
 
